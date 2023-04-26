@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reviewer Responses</title>
+</head>
+<link rel="stylesheet" href="RR.css">
+<body>
+
+<h1>Reviewer 1: Major Comments</h1>
+
+  <ul>
+<details>
+  <summary>ONE. Why did you select the anion pillared MOFs? <span class="AVT">(Adressed via Text)</span></summary>
+  <i>Please 1. Explain and 2. Justify/mention as a caveat that: claims about ML descriptors being predictive or not should be based on a _diverse_ set of structures. This study seems tailored to one particular type of MOFs… I think this is important to discuss since the premise of the paper is that these feature importances hold for other MOFs too. Is the reason for choosing this subset that the charges were available for these? Note, the DDEC MOF data set by Sholl has charges too.</i>
+  <p>
+    Answer<br>
+    It was not only the Anion Pillared MOFs that were selected. Clarification in the manuscript will be added to indicate it was the Anion Pillared MOFs that were used to evalute the time necessary for gathering descriptors while a subset of the CORE MOFs (the ones where the partial charges had been calculated) were used in the model as well to capture the diversity of MOF structures. The model was then also tested on QMOFs; however, I am not sure if this should be in the manuscript. 
+  </p>
+</details>
+</ul>
+
+<ul>
+<details>
+  <summary>TWO. The stochastic surface sampling descriptor. <span class="RA">(Requires Attention)</span></summary>
+  <i>TWO A. what is the reasoning for the invention of this descriptor? I found it very odd to look at “gas deflecting off of the surface”. What do you mean by this? What is the physical situation here? First, the MOF is an infinite periodic crystal in the simulation. It does not include an actual gas phase in contact with the outer surface of a MOF crystallite. Second, the GCMC pertains to equilibrium properties. This descriptor is motivated by kinetic properties. These two points make it look like the authors have a fundamental mis-understanding about the GCMC simulation. But, the descriptor does contain information about the potential energy surface, so it is okay to include as a descriptor. It would be more reasonable/natural if it were diffusion you were looking at here (which you later mention). At least, justify more carefully why you are investing this descriptor. It just seems odd to me. Why not just bin the potential energy into a histogram, like the Snurr group does? The potential energy is what the GCMC simulation directly relies upon; the GCMC simulation will not account for kinetic hopping like what is happening here in this descriptor. Yes, there are translation moves in the simulation but these are not literal translations in the temporal sense. It is just a way to explore the state space. One could also just do insertions and deletions (no translations) and get the same answer from GCMC (after more samples though, since sampling would be more inefficient).<br>TWO B. What slide(s) of the MOF did you choose and how, referring to Figure 1? Please explain clearly. </i><br>
+
+  <p>
+    Answer <br>
+    <b style="color: red">We need to decide whether this descriptor will be kept in the manjuscript. </b> The boundary surfaces along the primary axes are considered and the MOFs origin is shifted such that the highest density of atoms are near the origin. While this in part removes some of the arbitrariness of where the boundaries are set, a different coordinate system could have been used that yields different results. Instead of this being a kinematic property (this is due to poor phrasing in the original script), the descriptors should be thought of as the proportion on the boundary surfaces (of the MOF with the shifted origin), of where a CO2 molecule can be placed unimpeded by the VDW forces. So while this does take into account interactions with the framework, it does so only along the crystal boundaries using approximate VDW interactions. While this is comparable in some ways to the void fraction, looking purely along the surface atoms allows for a Markov Matrix to be used via the simplified approach. While other methods of creating a Markov Matrix are possible, the performance of looking at the "inseration probability" along each surface was tested with this descriptor. <br> 
+    The IRMOF structure was shown in the Figure. (I will have to see which specific sides were evaluated)
+  </p>
+</details>
+</ul>
+
+<ul>
+<details>
+  <summary>THREE. What is the performance if you apply Henry’s law? <span class="AVNS">(Adressed via New Section)</span></summary>
+  <i>  So, no machine learning model. That should be added as a baseline. The message may be: often simple physics-based approximations can give better performance than a machine learning model.</i>
+  <p>
+    Answer <br>
+    Henry's law appears to be effective in MOFs with low KH at the lowest pressures. The MOFs that we are most interested in often have high KH values that do  not deviate significantly from the values predicted through Henry's law. <i>These were shown in meeting slides from previous weeks. A few of the figures are shown below</i>
+    <img src="./I1.png" alt="Image1" width="600"> <br>
+    <img src="./I2.png" alt="Image1" width="500" > <br>
+    <img src="./I3.png" alt="Image1" width="500" > 
+  </p>
+</details>
+</ul>
+
+<ul>
+<details>
+  <summary>FOUR. EPoCh descriptors. <span class="AVT">(Adressed via Text)</span></summary>
+  <i>FOUR A. You are approximating the function f(Q, p) with equation 2. Why use a polynomial approximation? This is a machine learning task as well, to learn/approximate f(Q, p) from data. But you choose an arbitrary high order polynomial that can easily overfit. Why not use the random forest for this too? Unclear. That would avoid the zero-ing out you are doing too. <br>
+  FOUR B. “EPoCh descriptors have the benefit of not requiring a simulation”. I thought you used a simulation. <br>
+  FOUR C. “single atom frameworks were created”. Are periodic boundary conditions applied? Then how do you choose the length of the unit cell? <br>
+  FOUR D. So you get a single number to represent a MOF then? Give intuition for why you are adding them up. I see why but to be clear explain your reasoning. Instead of just “we did this” explain the reasoning behind why/ what your assumption is/ what ideal situation this corresponds to. <br>
+  FOUR E. Say that “f” is the uptake in the simulation.</i>
+  <p>
+    Answer. <br>
+    A. The use of a ploynomial equation obviates the necessity of using ML libraries whil gathering the descriptor while simultaneously ensuring the reproducability of the descriptor. If a ML model such as RF were used instead, there would be minor deviations betweeen the value of descriptors each time they are gathered. There is no concern regarding over-fitting for the polynomial as the function is desired to match the simulated data as closely as possible. In future works, the zeroing issue will be adressed by removing the "p" parameter of the function. 
+    <br>
+    B. The dataset to which the polynomial function was fit, did require numerous simulations. These simulations were both computationally cheap and expedient to run. Evaluating the partial charges in frameworks will not require additional simulations; therefore the sentence should instead be phrased as "not requiring additional simulations" for gathering. 
+    <br>
+    C. Periodic boundary conditions did apply (I am fairly certain RASPA uses periodic conditions). The length of the unitcell was set such that the dimension in any direction exceeded the interaction length of 13A. The exact sizing is arbitrary, but 20A was selected. A dataset that evaluates the electrostatic interactions of a different gas molecule with a point charge could easily select a different size unit cell (e.g. 100A, or 50A, 1000A in each dimension) so long as each point charge is placed within the identically sized unitcell. 
+    <br>
+    D. The partial charge or each atom in the MOF structure is considered first in isolation and evaluated through the polynomial function determined above. This way, the amount of CO2 that charge would attract in a vacuum (and at the specific unitcell dimension) can be determined. The entire structure is then evaluated by summing these values. As the likelihood of large values from this summation increases with larger frameworks, the per-atom average is then taken. By including both of the sum and average as descriptors, the intuition would be to carry both information aboout the average effect of the partial charges within the framework, and by including the sum, to carry information regarding the size and "polarity"  (dipole moment) of the structure by evaluating teh discrepancy between these values. 
+    <br>
+    E. Clarified via text in manuscript. 
+
+
+  </p>
+</details>
+</ul>
+
+
+
+<ul>
+<details>
+  <summary>FIVE. A huge table of numbers in Table 2? <span class="RA">(Requires Attention)</span></summary>
+  <i>  Please make a data visualization. Few have time/patience to stare at your numbers and figure out trends. Poor way to present results. You could turn this into a bar plot for the different metrics to more easily parse/send the message of trends.</i>
+  <p>
+    Answer.
+     <b style="color: red"> How the figures should be displayed and what information will be conveyed still needs to be determined!</b> 
+
+    The numbers in the table have slightly changed with the conversion of group A descriptors to the volumetric basis. Based on the new descriptors, the values can be converted to bar charts, or other figures. The difficulty is to capture the necessary information. The full table can be moved to the SI. 
+  </p>
+</details>
+
+<br>
+<br>
+<br>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+<h1>Reviewer 2: Major Comments</h1>
+<ul>
+<details>
+  <summary> Point 1: Henry's Law <span class="AVT">(Adressed via Text and SI)</span></summary>
+  <i> The model performs well only when given the Henry's constant (Table 2), we need to make sure that we are not over-complicating a simple problem that could be solved using a simple physical laws. I would recommend comparing the results to the uptake obtained by using the Henry’s law (N = K_H * P). Are we out of the Henry's law regime? If we are out of the Henry regime, we need to be more specific on the role of the other descriptors in measuring the gap between the simple Henry law’s uptake and the GCMC calculated uptake.</i>
+  <p>
+    Answer<br>
+    Since this has been brough up by both reviewers, it makes sense to add a new section specifically for evaluating Henry's Law as a baseline of performance. While it does not perform well for the MOFs with high uptake, it has a good correlation with the uptake of MOFs that dont capture much CO2. Similar to the drawback of the model that utilises KH as a feature, this would also have the drawback of requiring considerable computational power to gather in the first place. 
+  </p>
+</details>
+</ul>
+<ul>
+
+
+<details>
+  <summary>Point 2: S3 Descriptor "Interior" vs "Exterior" <span class="RA">(Requires Attention)</span></summary>
+  <i>  Stochastic Surface Sampling models the transition from a unitcell to an adjacent one from the Van der Waals interactions point of view. I am a bit uncomfortable with the use of the terms “exterior” and “interior”, since it could be misinterpreted as if the gas is going out of the material. Please reformulate.</i>
+  <p>
+    Answer  <b style="color: red">We need to decide whether this descriptor will be kept in the manjuscript. </b> <br>
+    The "interior" and "exterior" are based on the unitcell boundaries of the MOF with offet coordinates as described in the response to Reviewer 1. While this is not a direct match with the reality of the situation, it is a necessary definition to derive the Markov Matrix. This descriptor will be elaborated on by avoiding the terms  "interior" and "exterior" if kept in the text. 
+  </p>
+</details>
+
+</ul>
+<ul>
+
+<details>
+  <summary>Point 3: A group descriptor conversion to volumetric or gravimetric basis <span class="AVNS">(Adressed via Chanegs to Dataset)</span></summary>
+  <i> In the A group descriptors, the choice of the number of atoms per unitcell seems to be a questionable descriptor since doubling the size of the unitcell does not affect the adsorption isotherms but it does affect this descriptor. I would suggest using either a percentage of atoms or a volumetric measure (any intensive variable would be better).</i>
+  <p>
+    Answer <br>
+    This is a good concern to mention as it was something that has been on the back of my mind as well since the O2/N2 paper. While the article that motivated this descriptor did not appear to convert to a volumetric or gravimetric basis, the way the RF algorithm works would divide the "space" depending on the ratio of atoms to onw another anyway. To ensure additional information regarding the size is captire (such that doubling the unitcell does not affect the values directly) the descriptor was converted to a volumetric basis. The results prior to this change and following this change are shown in the figures below. <br><br>
+
+    <img src="./I5.png" alt="Image1" width="500" > 
+    <img src="./I6.png" alt="Image1" width="500" > 
+  </p>
+</details>
+
+</ul>
+<ul>
+<details>
+  <summary>Point 4: Convert MSE to RMSE <span class="AVT">(Adressed via Changes to Table)</span></summary>
+  <i> The scikit learn mean_squared_error is less interpretable than the RMSE in mmol/g. Please put a root on every MSE values given. I would suggest recalculating all the values given in Table 2. using the RMSE (mmol/g) metric.</i>
+  <p>
+    Answer<br>
+    The proposed changes will be made to the table. As mentioned in the response to reviewer 1, the table will be moved to SI while the contents will be summarised through figures. 
+  </p>
+</details>
+
+</ul>
+<ul>
+
+
+<details>
+  <summary>Point 5: Epoch's role in the absence of Henry's Constant <span class="AVT">(Adressed via Text and SI)</span></summary>
+  <i>If we don’t use Henry’s constants, the models are not very interesting since the MSE is around 0.37, which corresponds to RMSE of 0.6 mmol/g (in the 1kPa case). These are very high errors for uptake values ranging from 0 to 7 mmol/g (in the 1kPa case). I therefore suggest being more nuanced on the “pivotal role” of EPoCh features in absence of Henry’s constant.</i>
+  <p>
+    Answer <br>
+    While the error values are high, the regions that they fall into for pseudo-classification are quite accurate when using a 1mmol/g threshold. Similarly, when  classification models are used directly, the model's performance is comparable to the model with KH and even outperforms it in some instances. (Refer to PDF)
+
+    <img src="./I4.png" alt="Image1" width="500" > 
+  </p>
+</details>
+
+</ul>
+<ul>
+
+
+<details>
+  <summary>Point 6: Model Transferrability to Other Pressures <span class="RA">(Requires Attention)</span></summary>
+  <i>Since the authors ambition to use a single transferable model to predict any pressures at the low-pressure limit, it would be interesting to predict the uptake at pressures between 40Pa and 1kPa (400 Pa for example) without having seen examples of it in the training set. This would give a better idea on the transferability of the model to different but close values of pressure.</i>
+  <p>
+    Answer  <br><b style="color: red">  The results are ready for the dataset without the revisions. The updates must be reflected and added to the manuscript </b> <br>
+    In addition to re-gathering the results. It seems like this could be a completely separate section? 
+  </p>
+</details>
+
+</ul>
+
+
+
+
+
+
+

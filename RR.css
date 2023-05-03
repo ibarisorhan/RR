@@ -18,3 +18,15 @@ summary {
 .RA {
 	color: red;
 }
+
+.low {
+	color: green;
+}
+
+.mid {
+	color: #fcba03; 
+}
+
+.hi {
+	color: red;
+}

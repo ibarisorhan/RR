@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reviewer Responses</title>
+</head>
+<link rel="stylesheet" href="RR.css">
+<body>
+
+<h1>Reviewer 1: Secondary Comments</h1>
+
+<ul>
+<li>ABSTRACT: EPoCh not explained.<span class="low">(Changes to text)</span></li>	
+</ul>
+
+<ul>
+<li>INTRODUCTION: Anderson “synthesized”. Not really. These are computational models of crystal structures. <span class="low">(Changes to text)</span></li>	
+<li>INTRODUCTION: “three concentrations of this gas will be considered” replace “this gas” with the specific gas.<span class="low">(Changes to text)</span></li>	
+</ul>
+
+<ul>
+<li>METHODOLOGY: “Drop in entropy”. Aren’t you doing regression? Entropy is the basis for a split for classification, not regression…<span class="mid">(Changes to text, requires seeing how sklearn's RF ranks importance in regression)</span></li>	
+<li>METHODOLOGY: Please put in the main text the water and CO2 model you used and add the appropriate citation. It doesn’t make sense to say the model you used for the MOF but not the adsorbate.<span class="low">(Addition to text)</span></li>
+<li>METHODOLOGY: “surface was fitted to the simulation results” you gave the resulting function not the parametric function to which the data was fitted… <span class="hi">(Unclear what the reviewer is asking)</span></li>
+<li>METHODOLOGY: “No descriptor displayed a significant negative correlation”. A negative correlation would be HELPFUL for the machine learning algorithm too. Only “uncorrelated” is not helpful.<span class="low">(Changes to text, review of data)</span></li>
+<li>METHODOLOGY: 12,637 datapoints. Be specific what a “data point” is.<span class="low">(Changes to text; datapoint = GCMC simulations)</span></li>	
+<li>METHODOLOGY: Table 2, numbers are too big for time required. How about using hrs?<span class="low">(Changes to text)</span></li>	
+<li>METHODOLOGY: Figure 4, 5. X- y-axis labels. CO2, H2O need subscripts in plots. This looks low quality. Orange points are buried.<span class="mid">(Revision to figure)</span></li>	
+</ul>
+
+<h1>Reviewer 2: Secondary Comments</h1>
+Majorish comments:
+<ul>
+<li>By only reading the Methods, I did not understand how the Effective Point Charge (EPoCh) descriptor was specific to a structure. I would suggest adding some sentences on the fact that Q corresponds to the sum of charges of a given structure and this is how the descriptor is structure-specific. I would also suggest clarifying if these descriptors are absolute values, volumetric or per atom (by reading the Table 1, it suggests all types are present).<span class="low">(Changes to text)</span></li>
+<li>Considering the figure 5, it is very misleading to state that EPoCh descriptors are the second most important group of descriptors. They contribute very little to the overall accuracy of the ML model. Please provide a bit more nuance.<span class="low">(Changes to text)</span> <br> <i> While the Epoch descriptors contribute little when KH is inlcuded, the contribution on the part of Epoch is far from negligible. Without KH (which is computationally quite expensive), the Epoch descriptor clearly becomes the most significant contributor to predictions </i></li>
+<li>In the conclusion, the authors concede that S3 descriptors are not “greatly influential” and that they are more suitable for diffusion applications. Please elaborate more on why in the conclusion or/and in the discussions.<span class="hi">(Will S3 stay in the manuscript?)</span></li>
+<li>The S3 descriptor could be interesting for diffusion prediciton. However, the diffusion transition points are not necessarly placed on the faces of the unitcell (see https://pubs.acs.org/doi/10.1021/acs.jctc.8b01255). The choice of the surface seems a bit arbitrary.<span class="hi">(Will S3 stay in the manuscript?)</span></li>
+<li>I think there is an error in the Abstract. If I look at Table 2, the D+E descriptors are only hundreds or thousands of times faster than the descriptor F and not “hundreds of thousands of times”. In the conclusion, the authors mention “multiple thousands of times faster”. Please correct it in the abstract.<span class="mid">(The timing of Epoch alone is millions of times faster, not S3. This should be made clear)</span></li>
+<li>I can’t see the general conclusion of the “Interactions with H2O” section, what is the aim of the data presented? Please clarify this section by stating clearly if the approach works better or worse than the literature.<span class="mid">(Requires elaboration, possibly addditional work)</span></li>
+</ul>
+<br>
+Minor comments:
+<br>
+<b style="color: green"> ALL OF THE FOLLOWING ARE EASILY ADDRESSED BY CHANGES TO TEXT</b>
+<ul>
+<li>The references are placed inconsistently (spacing, before or after the fall point)</li>
+<li>MOFs instead of MOFS</li>
+<li>« the. ML mode. » -> the ML model</li>
+<li>“Not only have increases in CO2 concentrations have been shown to have impacts on the climate; there are potential negative effects of this increased CO2 on mammalian physiology” -> “Not only has the increase in CO2 concentrations been proven to have impacts on the climate, but it also has potential negative effects on mammalian physiology”</li>
+<li>“remains to be capture” -> “remains to be captured”</li>
+<li>“that that” -> “than that”</li>
+<li>“H2O” don't forget the subscript on 2 </li>
+<li>“the cutoff distance for interactions between set to” words are missing</li>
+<li>“to modelled” -> “to model”</li>
+<li>The data is easily accessible via a github repository and the Raspa simulations are perfectly reproducible given the details provided. However, details on the EPoCh and S3 descriptors are yet to be uploaded.</li>
